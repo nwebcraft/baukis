@@ -1,0 +1,15 @@
+@import 'colors';
+@import 'dimensions';
+
+form.search {
+  padding: $narrow;
+  border: solid 1px $dark_gray;
+  background-color: $very_light_gray;
+  div {
+    display: inline-block;
+    margin: $moderate $very_wide $moderate $moderate;
+    label {
+      margin-right: $moderate;
+    }
+  }
+}
