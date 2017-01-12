@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Administrator, :type => :model do
+RSpec.describe Administrator, type: :model do
   describe '#password=' do
     example '文字列を与えると、hashed_passwordは長さ60の文字列になる' do
       admin = Administrator.new

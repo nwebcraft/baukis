@@ -10,15 +10,21 @@ class AllowedSource < ActiveRecord::Base
     self.octet2 = octets[1]
     self.octet3 = octets[2]
     if octets[3] == '*'
-      self.octet4 == 0
+      self.octet4 = 0
       self.wildcard = true
     else
       self.octet4 = octets[3]
     end
   end
 
-
-
-
+  def self.include?(namespace, ip_address)
+    return true unless Rails.application.config.baukis[:restrict_ip_addresses]
+    octets = ip_address.split('.')
+    condition = %|
+      octet1 = ? AND octet2 = ? AND octet3 = ? AND ((octet4 = ? AND wildcard = ?) OR wildcard = ?)
+    |.gsub(/\s+/, ' ').strip
+    opts = [condition, *octets, false, true]
+    where(namespace: namespace).where(opts).exists?
+  end
 
 end
