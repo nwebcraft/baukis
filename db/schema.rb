@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170103143753) do
+ActiveRecord::Schema.define(version: 20170112071904) do
 
   create_table "addresses", force: true do |t|
     t.integer  "customer_id",                null: false
@@ -45,6 +45,19 @@ ActiveRecord::Schema.define(version: 20170103143753) do
   end
 
   add_index "administrators", ["email_for_index"], name: "index_administrators_on_email_for_index", unique: true, using: :btree
+
+  create_table "allowed_sources", force: true do |t|
+    t.string   "namespace",                  null: false
+    t.integer  "octet1",                     null: false
+    t.integer  "octet2",                     null: false
+    t.integer  "octet3",                     null: false
+    t.integer  "octet4",                     null: false
+    t.boolean  "wildcard",   default: false, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "allowed_sources", ["namespace", "octet1", "octet2", "octet3", "octet4"], name: "index_allowed_sources_on_namespace_and_octets", unique: true, using: :btree
 
   create_table "customers", force: true do |t|
     t.string   "email",            null: false
