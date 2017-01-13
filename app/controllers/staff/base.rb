@@ -15,6 +15,7 @@ class Staff::Base < ApplicationController
   end
 
   helper_method :current_staff_member
+
   def check_source_ip_address
     raise IpAddressRejected unless AllowedSource.include?('staff', request.ip)
   end
