@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 feature '職員による顧客管理' do
-  include FeatureSpecHelper
+  include FeaturesSpecHelper
 
   given(:staff_member) { create(:staff_member) }
   given!(:customer1) do

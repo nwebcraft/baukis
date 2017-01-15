@@ -9,6 +9,8 @@ class Customer < ActiveRecord::Base
   has_many :phones, dependent: :destroy
   has_many :personal_phones, -> { where(address_id: nil).order(:id) },
     class_name: 'Phone', autosave: true
+  has_many :entries, dependent: :destroy
+  has_many :programs, through: :entries
 
   validates :gender, inclusion: { in: %w(male female) }
   validates :birthday, date: {

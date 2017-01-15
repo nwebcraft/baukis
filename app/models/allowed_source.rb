@@ -2,13 +2,14 @@ class AllowedSource < ActiveRecord::Base
   attr_accessor :last_octet, :_destroy
 
   before_validation do
-    # last_octet が '*'かで処理をわける
-    self.last_octet.strip!
-    if last_octet == '*'
-      self.octet4 = '0'
-      self.wildcard = true
-    else
-      self.octet4 = last_octet
+    if last_octet
+      self.last_octet.strip!
+      if last_octet == '*'
+        self.octet4 = '0'
+        self.wildcard = true
+      else
+        self.octet4 = last_octet
+      end
     end
   end
 
@@ -19,7 +20,6 @@ class AllowedSource < ActiveRecord::Base
   validates :last_octet, inclusion: { in: (0..255).to_a.map(&:to_s) + ['*'], allow_blank: true }
 
   after_validation do
-    # octet4のエラーをlast_octetに登録
     if last_octet
       errors[:octet4].each do |message|
         errors.add(:last_octet, message)
@@ -40,14 +40,18 @@ class AllowedSource < ActiveRecord::Base
     end
   end
 
-  def self.include?(namespace, ip_address)
-    return true unless Rails.application.config.baukis[:restrict_ip_addresses]
-    octets = ip_address.split('.')
-    condition = %|
-      octet1 = ? AND octet2 = ? AND octet3 = ? AND ((octet4 = ? AND wildcard = ?) OR wildcard = ?)
-    |.gsub(/\s+/, ' ').strip
-    opts = [condition, *octets, false, true]
-    where(namespace: namespace).where(opts).exists?
-  end
+  class << self
+    def include?(namespace, ip_address)
+      !Rails.application.config.baukis[:restrict_ip_addresses] ||
+        where(namespace: namespace).where(options_for(ip_address)).exists?
+    end
 
+    def options_for(ip_address)
+      octets = ip_address.split('.')
+      condition = %|
+        octet1 = ? AND octet2 = ? AND octet3 = ? AND ((octet4 = ? AND wildcard = ?) OR wildcard = ?)
+      |.gsub(/\s+/, ' ').strip
+      [condition, *octets, false, true]
+    end
+  end
 end
