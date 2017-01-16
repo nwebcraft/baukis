@@ -2,7 +2,8 @@ class FormPresenter
   include HtmlBuilder
 
   attr_reader :form_builder, :view_context
-  delegate :label, :email_field, :text_field, :password_field, :check_box, :radio_button, :object, to: :form_builder
+  delegate :label, :email_field, :text_field, :number_field, :password_field,
+           :check_box, :radio_button, :text_area, :object, to: :form_builder
 
   def initialize(form_builder, view_context)
     @form_builder = form_builder
@@ -28,6 +29,22 @@ class FormPresenter
     markup(:div, class: 'input-block') do |m|
       m << decorated_label(name, label_text, options)
       m << text_field(name, options)
+      if options[:maxlength]
+        m.span "(#{options[:maxlength]}文字以内)", class: 'instruction'
+      end
+      m << error_messages_for(name)
+    end
+  end
+
+  def number_field_block(name, label_text, options = {})
+    markup(:div) do |m|
+      m << decorated_label(name, label_text, options)
+      # m << form_builder.number_field(name, options)
+      m << number_field(name, options)
+      if options[:max]
+        max = view_context.number_with_delimiter(options[:max].to_i)
+        m.span "(最大値: #{max})", class: 'instruction'
+      end
       m << error_messages_for(name)
     end
   end
