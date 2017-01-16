@@ -39,9 +39,16 @@ class Program < ActiveRecord::Base
   end
 
   scope :listing, -> {
-    joins('LEFT OUTER JOIN entries ON programs.id = entries.program_id').
-    select('programs.*, COUNT(entries.id) AS number_of_applicants').group('programs.id').
-    order(application_start_time: :desc).includes(:registrant)
+    joins('LEFT OUTER JOIN entries ON programs.id = entries.program_id')
+      .select('programs.*, COUNT(entries.id) AS number_of_applicants')
+      .group('programs.id')
+      .order(application_start_time: :desc)
+      .includes(:registrant)
+  }
+
+  scope :published, -> {
+    where('application_start_time <= ?', Time.current)
+      .order(application_start_time: :desc)
   }
 
   def deletable?

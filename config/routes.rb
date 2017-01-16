@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+
   config = Rails.application.config.baukis
 
   constraints host: config[:staff][:host] do
@@ -35,6 +36,11 @@ Rails.application.routes.draw do
       root 'top#index'
       get 'login' => 'sessions#new', as: :login
       resource :session, only: [:create, :destroy]
+      resources :programs, only: [:index, :show] do
+        resources :entries, only: :create do
+          patch :cancel, on: :member
+        end
+      end
     end
   end
 

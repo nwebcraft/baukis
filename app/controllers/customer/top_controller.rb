@@ -2,6 +2,8 @@ class Customer::TopController < Customer::Base
   skip_before_action :authorize
 
   def index
-    # raise ActiveRecord::RecordNotFound
+    if current_customer
+      render 'dashboard'
+    end
   end
 end
