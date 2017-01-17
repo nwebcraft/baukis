@@ -18,7 +18,7 @@ class Customer::EntryAcceptor
           return :full
         end
       else
-        program.entries.create!(customer: current_customer)
+        program.entries.create!(customer: @customer)
         return :accepted
       end
     end
