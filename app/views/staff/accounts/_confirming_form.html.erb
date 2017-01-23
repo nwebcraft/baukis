@@ -1,0 +1,8 @@
+<%=
+  p = ConfirmingUserFormPresenter.new(f, self)
+  markup do |m|
+    m << p.text_field_block(:email, 'メールアドレス')
+    m << p.full_name_block(:family_name, :given_name, '氏名')
+    m << p.full_name_block(:family_name_kana, :given_name_kana, 'フリガナ')
+  end
+%>
