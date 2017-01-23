@@ -7,4 +7,5 @@
   <% else %>
     <%= link_to 'ログイン', :customer_login %>
   <% end %>
+  <%= link_to 'アカウント', :customer_account if current_customer %>
 </header>
