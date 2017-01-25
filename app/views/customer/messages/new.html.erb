@@ -1,0 +1,12 @@
+<% @title = '' %>
+<h1><%= @title %></h1>
+
+<div id="generic-form">
+  <%= form_for @message, url: :confirm_customer_messages do |f| %>
+    <%= render 'form', f: f %>
+    <div class="buttons">
+      <%= f.submit '確認' %>
+      <%= link_to 'キャンセル', customer_root_path %>
+    </div>
+  <% end %>
+</div>
