@@ -13,7 +13,10 @@ Rails.application.routes.draw do
       resource :password, only: [:show, :edit, :update]
       resources :customers
       resources :programs do
-        patch 'entries', on: :member
+        patch :entries, on: :member
+      end
+      resources :messages, only: [] do
+        get :count, on: :collection
       end
     end
   end
