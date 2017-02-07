@@ -8,6 +8,13 @@ class Message < ActiveRecord::Base
   validates :subject, length: { maximum: 80, allow_blank: true }
   validates :body, length: { maximum: 800, allow_blank: true }
 
+  before_validation do
+    if parent
+      self.customer = parent.customer
+      self.root = parent.root || parent
+    end
+  end
+
   before_create do
     if parent
       self.customer = parent.customer
