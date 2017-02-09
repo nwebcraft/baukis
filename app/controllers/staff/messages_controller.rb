@@ -34,4 +34,16 @@ class Staff::MessagesController < Staff::Base
     flash.notice = '問い合わせを削除しました。'
     redirect_to :back
   end
+
+  def tag
+    message = CustomerMessage.find(params[:id])
+    if request.post?
+      message.add_tag(params[:label])
+    elsif request.delete?
+      message.remove_tag(params[:label])
+    else
+      raise
+    end
+    render text: 'OK'
+  end
 end
