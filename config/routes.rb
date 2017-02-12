@@ -23,6 +23,11 @@ Rails.application.routes.draw do
           patch :confirm
         end
       end
+      resources :tags, only: [] do
+        resources :messages, only: :index do
+          get :inbound, :outbound, :deleted, on: :collection
+        end
+      end
     end
   end
 
