@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170209143714) do
+ActiveRecord::Schema.define(version: 20170215114152) do
 
   create_table "addresses", force: true do |t|
     t.integer  "customer_id",                null: false
@@ -100,6 +100,16 @@ ActiveRecord::Schema.define(version: 20170209143714) do
 
   add_index "entries", ["customer_id"], name: "index_entries_on_customer_id", using: :btree
   add_index "entries", ["program_id", "customer_id"], name: "index_entries_on_program_id_and_customer_id", unique: true, using: :btree
+
+  create_table "hash_locks", force: true do |t|
+    t.string   "table",      null: false
+    t.string   "column",     null: false
+    t.string   "key",        null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "hash_locks", ["table", "column", "key"], name: "index_hash_locks_on_table_and_column_and_key", unique: true, using: :btree
 
   create_table "message_tag_links", force: true do |t|
     t.integer  "message_id", null: false
