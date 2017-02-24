@@ -23,6 +23,6 @@ class StaffMember < ActiveRecord::Base
   end
 
   def deletable?
-    programs.enpty?
+    programs.empty?
   end
 end
