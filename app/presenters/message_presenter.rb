@@ -63,7 +63,7 @@ class MessagePresenter < ModelPresenter
     markup(:ul) do |m|
       m.li do
         if node.id == object.id
-          m.string(node.subject)
+          m.strong(node.subject)
         else
           m << link_to(node.subject, view_context.staff_message_path(node))
         end
