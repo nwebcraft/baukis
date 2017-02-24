@@ -61,6 +61,9 @@ Rails.application.routes.draw do
       end
       resources :messages, except: [:edit, :update] do
         post :confirm, on: :collection
+        resource :reply, only: [:new, :create] do
+          patch :confirm
+        end
       end
     end
   end
