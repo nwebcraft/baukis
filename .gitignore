@@ -26,3 +26,5 @@ Vagrantfile
 /provision
 
 /public/assets
+
+/.idea/*
